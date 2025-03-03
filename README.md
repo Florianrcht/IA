@@ -13,25 +13,17 @@ Par exemple, avec une IA entraînée à multiplier un nombre en entrée par 2, o
 ---
 
 ## Construit avec  
-* ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white) [Python](https://www.python.org/)  
+* ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
 
 ---
 
 ## Bibliothèques utilisées  
-* ![TensorFlow](https://img.shields.io/badge/TensorFlow-FF6F00?style=for-the-badge&logo=tensorflow&logoColor=white) [TensorFlow](https://www.tensorflow.org/)  
-* ![Keras](https://img.shields.io/badge/Keras-D00000?style=for-the-badge&logo=keras&logoColor=white) [Keras](https://keras.io/)  
+* ![TensorFlow](https://img.shields.io/badge/TensorFlow-FF6F00?style=for-the-badge&logo=tensorflow&logoColor=white)
+* ![Keras](https://img.shields.io/badge/Keras-D00000?style=for-the-badge&logo=keras&logoColor=white) 
 
 ---
 
 ## Pourquoi ce choix ?  
-Keras est une bibliothèque intégrée dans **TensorFlow**, permettant une **simplification du code** et une **interface intuitive**, tout en bénéficiant de la puissance de TensorFlow, une bibliothèque de **Deep Learning développée par Google**.  
-
-
-```md
-[Python-logo]: https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white  
-[TensorFlow-logo]: https://img.shields.io/badge/TensorFlow-FF6F00?style=for-the-badge&logo=tensorflow&logoColor=white  
-[Keras-logo]: https://img.shields.io/badge/Keras-D00000?style=for-the-badge&logo=keras&logoColor=white  
-
-[Python-url]: https://www.python.org/  
-[TensorFlow-url]: https://www.tensorflow.org/  
-[Keras-url]: https://keras.io/  
+Keras est une bibliothèque qui permet une interface graphique et facilite la création d'un réseau de neurones cachés (Deep Learning) en s'appuyant sur des frameworks de DL déjà existants (TensorFlow, Theano, et CNTK) via une API.
+Pour ce projet, je vais aussi utiliser TensorFlow en backend pour son efficacité et ses algorithmes évolutifs.
+Tous deux appartiennent à Google et disposent de beaucoup de documentation.
