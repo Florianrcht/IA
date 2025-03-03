@@ -13,13 +13,13 @@ Par exemple, avec une IA entraînée à multiplier un nombre en entrée par 2, o
 ---
 
 ## Construit avec  
-* [![Python][Python-logo]][Python-url]  
+* ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white) [Python](https://www.python.org/)  
 
 ---
 
 ## Bibliothèques utilisées  
-* [![TensorFlow][TensorFlow-logo]][TensorFlow-url]  
-* [![Keras][Keras-logo]][Keras-url] 
+* ![TensorFlow](https://img.shields.io/badge/TensorFlow-FF6F00?style=for-the-badge&logo=tensorflow&logoColor=white) [TensorFlow](https://www.tensorflow.org/)  
+* ![Keras](https://img.shields.io/badge/Keras-D00000?style=for-the-badge&logo=keras&logoColor=white) [Keras](https://keras.io/)  
 
 ---
 
