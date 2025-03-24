@@ -1,6 +1,7 @@
 import RPi.GPIO as GPIO
 import time
 
+print("test")
 GPIO.setmode(GPIO.BCM)
 servo_pin = 1  # Choisir la broche GPIO (ici GPIO 17)
 GPIO.setup(servo_pin, GPIO.OUT)
