@@ -1,16 +1,19 @@
-import RPi.GPIO as GPIO  # Imports the standard Raspberry Pi GPIO library
-from time import sleep   # Imports sleep (aka wait or pause) into the program
-GPIO.setmode(GPIO.BOARD) # Sets the pin numbering system to use the physical layout
+import RPi.GPIO as GPIO  #General Purpose Input/Output
+from time import sleep  
+GPIO.setmode(GPIO.BOARD) # Permet d'utiliser la numérotation physique des pins
 
-# Set up pin 11 for PWM
-GPIO.setup(11,GPIO.OUT)  # Sets up pin 11 to an output (instead of an input)
-p = GPIO.PWM(11, 50)     # Sets up pin 11 as a PWM pin
+GPIO.setup(11,GPIO.OUT)  # Setup le pin 11 (GPIO17) comme point sortie (OUT pour OUTPUT) 
+                         # OUT permet la sortie d'information (ici la rotation demandée)
+                         # IN permet l'entrée d'information (l'appuye sur un bouton)
+
+p = GPIO.PWM(11, 50)     # Setup le pin 11 comme un signal PWM (Pulse Width Modulation / le cable de controle) avec une puissance de 50 Hz
+
 p.start(0)               # Starts running PWM on the pin and sets it to 0
 
 # Move the servo back and forth
-p.ChangeDutyCycle(3)     # Changes the pulse width to 3 (so moves the servo)
+p.ChangeDutyCycle(5)     # Changes the pulse width to 3 (so moves the servo)
 sleep(1)                 # Wait 1 second
-p.ChangeDutyCycle(12)    # Changes the pulse width to 12 (so moves the servo)
+p.ChangeDutyCycle(25)    # Changes the pulse width to 12 (so moves the servo)
 sleep(1)
 
 # Clean up everything

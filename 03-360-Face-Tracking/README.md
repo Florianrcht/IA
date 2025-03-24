@@ -17,3 +17,4 @@ It is also possible that a host key has just been changed.
 The fingerprint for the ED25519 key sent by the remote host is.....
 
 commande resolution : ssh-keygen -R {RASPBERRY_IP}
+
