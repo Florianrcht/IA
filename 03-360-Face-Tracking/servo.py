@@ -2,7 +2,7 @@ import RPi.GPIO as GPIO
 import time
 
 GPIO.setmode(GPIO.BCM)
-servo_pin = 17  # Choisir la broche GPIO (ici GPIO 17)
+servo_pin = 1  # Choisir la broche GPIO (ici GPIO 17)
 GPIO.setup(servo_pin, GPIO.OUT)
 
 pwm = GPIO.PWM(servo_pin, 50)  # 50 Hz pour le signal PWM
