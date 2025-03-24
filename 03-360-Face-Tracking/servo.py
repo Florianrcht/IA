@@ -1,28 +1,18 @@
-import RPi.GPIO as GPIO
-import time
+import RPi.GPIO as GPIO  # Imports the standard Raspberry Pi GPIO library
+from time import sleep   # Imports sleep (aka wait or pause) into the program
+GPIO.setmode(GPIO.BOARD) # Sets the pin numbering system to use the physical layout
 
-print("test")
-GPIO.setmode(GPIO.BCM)
-servo_pin = 1  # Choisir la broche GPIO (ici GPIO 17)
-GPIO.setup(servo_pin, GPIO.OUT)
+# Set up pin 11 for PWM
+GPIO.setup(11,GPIO.OUT)  # Sets up pin 11 to an output (instead of an input)
+p = GPIO.PWM(11, 50)     # Sets up pin 11 as a PWM pin
+p.start(0)               # Starts running PWM on the pin and sets it to 0
 
-pwm = GPIO.PWM(servo_pin, 50)  # 50 Hz pour le signal PWM
-pwm.start(0)
+# Move the servo back and forth
+p.ChangeDutyCycle(3)     # Changes the pulse width to 3 (so moves the servo)
+sleep(1)                 # Wait 1 second
+p.ChangeDutyCycle(12)    # Changes the pulse width to 12 (so moves the servo)
+sleep(1)
 
-# Déplacer le servo
-try:
-    while True:
-        # Tourner à 0° (basse vitesse)
-        pwm.ChangeDutyCycle(2.5)
-        time.sleep(1)
-        # Tourner à 90° (milieu)
-        pwm.ChangeDutyCycle(7.5)
-        time.sleep(1)
-        # Tourner à 180° (haute vitesse)
-        pwm.ChangeDutyCycle(12.5)
-        time.sleep(1)
-except KeyboardInterrupt:
-    pass
-
-pwm.stop()
-GPIO.cleanup()
+# Clean up everything
+p.stop()                 # At the end of the program, stop the PWM
+GPIO.cleanup()   
