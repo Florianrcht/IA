@@ -15,21 +15,24 @@ p = GPIO.PWM(11, 330)     # Setup le pin 11 comme un signal PWM (Pulse Width Mod
 # Donc avec un Duty Cycle à 3%, cela voudra dire que 3% du signal venant du PWM soit (0.6ms), est un signal HAUT donc le moteur va tourner vers sa position initiale.
 # Au contraire, avec un Duty Cycle à 12%, le moteur fera une rotation de 180 degré 
 
-print("start")
-p.start(0)               # On lance le servo avec un Duty Cycle à 0% (rien)
+print("Debut")
+p.start(50)  # Démarrage à l'arrêt
 
-print("initiale 0°")
-p.ChangeDutyCycle(16.5)  # 0°  
-sleep(3)
+print("Rotation horaire")
+p.ChangeDutyCycle(45)  # Tourne dans un sens
+sleep(2)
 
-print("90°")
-p.ChangeDutyCycle(49.5)  # 90°  
-sleep(3)
+print("Arrêt")
+p.ChangeDutyCycle(50)  # Arrêt
+sleep(1)
 
-print("180°")
-p.ChangeDutyCycle(82.5)  # 180°  
-sleep(3)
+print("Rotation antihoraire")
+p.ChangeDutyCycle(55)  # Tourne dans l’autre sens
+sleep(2)
 
-print("stop")
+print("Fin")
+p.ChangeDutyCycle(50)  # Arrêt
+sleep(1)
+
 p.stop()                 # On coupe le signal PWM
 GPIO.cleanup()           # On nettoie et libere la ressource du pin
