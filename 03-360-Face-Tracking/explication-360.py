@@ -1,37 +1,35 @@
-from pynput import keyboard
-import RPi.GPIO as GPIO
-from time import sleep
+import RPi.GPIO as GPIO  #General Purpose Input/Output
+from time import sleep  
+GPIO.setmode(GPIO.BOARD) # Permet d'utiliser la numérotation physique des pins
 
-# Configuration GPIO
-GPIO.setmode(GPIO.BOARD)
-GPIO.setup(11, GPIO.OUT)
+GPIO.setup(11,GPIO.OUT)  # Setup le pin 11 (GPIO17) comme point sortie (OUT pour OUTPUT) 
+                         # OUT permet la sortie d'information (ici la rotation demandée)
+                         # IN permet l'entrée d'information (l'appuye sur un bouton)
 
-p = GPIO.PWM(11, 330)  # Servo à 330 Hz
-p.start(50)  # Démarrage en position neutre
+p = GPIO.PWM(11, 330)     # Setup le pin 11 comme un signal PWM (Pulse Width Modulation / le cable de controle) avec une puissance de 330 Hz
 
-vitesse = 50  # Valeur initiale du Duty Cycle
+# Pour faire une rotation il y a deux choses importantes
+# PWM (Pulse Width Modulation) et Duty Cycle
+# Le PWM envoie un signal vers le moteur qui dure 20ms (50Hz) et ce signal est bas 
+# Le servo va traduire le temps de signal haut (Duty Cycle) en position
+# Donc avec un Duty Cycle à 3%, cela voudra dire que 3% du signal venant du PWM soit (0.6ms), est un signal HAUT donc le moteur va tourner vers sa position initiale.
+# Au contraire, avec un Duty Cycle à 12%, le moteur fera une rotation de 180 degré 
 
-def on_press(key):
-    global vitesse
-    try:
-        if key.char == 'z':  # Augmente la vitesse
-            vitesse = min(100, vitesse + 1)
-        elif key.char == 's':  # Réduit la vitesse
-            vitesse = max(0, vitesse - 1)
-        elif key.char == 'q':  # Quitte le programme
-            print("\nArrêt du programme.")
-            p.stop()
-            GPIO.cleanup()
-            return False  # Arrête l'écouteur
+print("start")
+p.start(0)               # On lance le servo avec un Duty Cycle à 0% (rien)
 
-        print(f"Nouvelle vitesse : {vitesse}%")
-        p.ChangeDutyCycle(vitesse)
+print("initiale 0°")
+p.ChangeDutyCycle(16.5)  # 0°  
+sleep(3)
 
-    except AttributeError:
-        pass  # Ignore d'autres touches
+print("90°")
+p.ChangeDutyCycle(49.5)  # 90°  
+sleep(3)
 
-print("Utilise 'Z' pour augmenter la vitesse et 'S' pour la réduire. Appuie sur 'Q' pour quitter.")
+print("180°")
+p.ChangeDutyCycle(82.5)  # 180°  
+sleep(3)
 
-# Démarrage de l'écoute du clavier
-with keyboard.Listener(on_press=on_press) as listener:
-    listener.join()  # Bloque le programme ici et écoute le clavier
+print("stop")
+p.stop()                 # On coupe le signal PWM
+GPIO.cleanup()           # On nettoie et libere la ressource du pin
