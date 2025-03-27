@@ -1,39 +1,19 @@
-import RPi.GPIO as GPIO  
-import time  
-import keyboard  # Permet de détecter les touches du clavier
+from pynput import keyboard
 
-# Configuration GPIO
-GPIO.setmode(GPIO.BOARD)  
-GPIO.setup(11, GPIO.OUT)  
+# Cette fonction sera appelée quand une touche est pressée
+def on_press(key):
+    try:
+        if key.char == 'z':  # Si la touche 'z' est pressée, augmente la vitesse
+            print("Vitesse augmentée")
+        elif key.char == 's':  # Si la touche 's' est pressée, réduit la vitesse
+            print("Vitesse réduite")
+        elif key.char == 'q':  # Si la touche 'q' est pressée, quitte le programme
+            print("Quitter")
+            return False  # Cela arrête l'écoute du clavier
+    except AttributeError:
+        # Ignore les touches spéciales (comme les touches SHIFT, CTRL, etc.)
+        pass
 
-# Configuration du signal PWM
-p = GPIO.PWM(11, 330)  # Fréquence 330 Hz pour un servo à rotation continue
-p.start(50)  # 50% = STOP
-
-servoVitesse = 50  # Départ en arrêt (50%)
-print("Utilise 'Z' pour augmenter la vitesse et 'S' pour la réduire. Appuie sur 'Q' pour quitter.")
-
-try:
-    while True:
-        # Vérifie si une touche est pressée
-        if keyboard.is_pressed('z'):  # Augmente la vitesse
-            if servoVitesse < 60:  # Limite maximale
-                servoVitesse += 1
-                print(f"Vitesse augmentée : {servoVitesse}%")
-                p.ChangeDutyCycle(servoVitesse)
-            time.sleep(0.1)  # Petit délai pour éviter d'aller trop vite
-
-        elif keyboard.is_pressed('s'):  # Diminue la vitesse
-            if servoVitesse > 40:  # Limite minimale
-                servoVitesse -= 1
-                print(f"Vitesse réduite : {servoVitesse}%")
-                p.ChangeDutyCycle(servoVitesse)
-            time.sleep(0.1)  
-
-        elif keyboard.is_pressed('q'):  # Quitte proprement avec 'Q'
-            print("Arrêt du programme.")
-            break
-
-finally:
-    p.stop()
-    GPIO.cleanup()
+# Crée une instance de listener pour écouter les touches du clavier
+with keyboard.Listener(on_press=on_press) as listener:
+    listener.join()  # Attends que l'utilisateur appuie sur une touche
