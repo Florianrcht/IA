@@ -1,38 +1,39 @@
-import RPi.GPIO as GPIO  #General Purpose Input/Output
-from time import sleep  
-GPIO.setmode(GPIO.BOARD) # Permet d'utiliser la numérotation physique des pins
+import RPi.GPIO as GPIO  
+import time  
+import keyboard  # Permet de détecter les touches du clavier
 
-GPIO.setup(11,GPIO.OUT)  # Setup le pin 11 (GPIO17) comme point sortie (OUT pour OUTPUT) 
-                         # OUT permet la sortie d'information (ici la rotation demandée)
-                         # IN permet l'entrée d'information (l'appuye sur un bouton)
+# Configuration GPIO
+GPIO.setmode(GPIO.BOARD)  
+GPIO.setup(11, GPIO.OUT)  
 
-p = GPIO.PWM(11, 330)     # Setup le pin 11 comme un signal PWM (Pulse Width Modulation / le cable de controle) avec une puissance de 330 Hz
+# Configuration du signal PWM
+p = GPIO.PWM(11, 330)  # Fréquence 330 Hz pour un servo à rotation continue
+p.start(50)  # 50% = STOP
 
-# Pour faire une rotation il y a deux choses importantes
-# PWM (Pulse Width Modulation) et Duty Cycle
-# Le PWM envoie un signal vers le moteur qui dure 20ms (50Hz) et ce signal est bas 
-# Le servo va traduire le temps de signal haut (Duty Cycle) en position
-# Donc avec un Duty Cycle à 3%, cela voudra dire que 3% du signal venant du PWM soit (0.6ms), est un signal HAUT donc le moteur va tourner vers sa position initiale.
-# Au contraire, avec un Duty Cycle à 12%, le moteur fera une rotation de 180 degré 
+servoVitesse = 50  # Départ en arrêt (50%)
+print("Utilise 'Z' pour augmenter la vitesse et 'S' pour la réduire. Appuie sur 'Q' pour quitter.")
 
-print("Debut")
-p.start(50)  # Démarrage à l'arrêt
+try:
+    while True:
+        # Vérifie si une touche est pressée
+        if keyboard.is_pressed('z'):  # Augmente la vitesse
+            if servoVitesse < 60:  # Limite maximale
+                servoVitesse += 1
+                print(f"Vitesse augmentée : {servoVitesse}%")
+                p.ChangeDutyCycle(servoVitesse)
+            time.sleep(0.1)  # Petit délai pour éviter d'aller trop vite
 
-print("Rotation horaire")
-p.ChangeDutyCycle(45)  # Tourne dans un sens
-sleep(2)
+        elif keyboard.is_pressed('s'):  # Diminue la vitesse
+            if servoVitesse > 40:  # Limite minimale
+                servoVitesse -= 1
+                print(f"Vitesse réduite : {servoVitesse}%")
+                p.ChangeDutyCycle(servoVitesse)
+            time.sleep(0.1)  
 
-print("Arrêt")
-p.ChangeDutyCycle(50)  # Arrêt
-sleep(1)
+        elif keyboard.is_pressed('q'):  # Quitte proprement avec 'Q'
+            print("Arrêt du programme.")
+            break
 
-print("Rotation antihoraire")
-p.ChangeDutyCycle(55)  # Tourne dans l’autre sens
-sleep(2)
-
-print("Fin")
-p.ChangeDutyCycle(50)  # Arrêt
-sleep(1)
-
-p.stop()                 # On coupe le signal PWM
-GPIO.cleanup()           # On nettoie et libere la ressource du pin
+finally:
+    p.stop()
+    GPIO.cleanup()
