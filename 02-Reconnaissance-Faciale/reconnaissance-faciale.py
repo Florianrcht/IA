@@ -33,7 +33,7 @@ while True:
 
         cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
 
-    cv2.imshow('Détection de visage', frame)
+    print('Détection de visage', frame)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break

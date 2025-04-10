@@ -1,5 +1,3 @@
-# servo_server.py
-
 import RPi.GPIO as GPIO  
 import asyncio
 import threading
@@ -11,12 +9,11 @@ GPIO.setmode(GPIO.BOARD)
 GPIO.setup(11, GPIO.OUT)  
 
 p = GPIO.PWM(11, 330)  
-p.start(50)  # 50% = STOP
+p.start(50) 
 
 servoControl = True
-servoVitesse = 0  # Départ en arrêt (50%)
+servoVitesse = 0  
 
-# Cette boucle tourne tant que servoControl est True
 async def looper():
     global servoControl
     global servoVitesse
