@@ -19,9 +19,13 @@ servoVitesse = 51  # Départ en arrêt (50%)
 # Cette boucle tourne tant que servoControl est True
 async def looper():
     global servoControl
+    
     while servoControl:
         p.ChangeDutyCycle(servoVitesse)
         await asyncio.sleep(0.1)
+
+    print("Arreté")
+    p.ChangeDutyCycle(50)  
 
 def start_async_loop():
     loop = asyncio.new_event_loop()
@@ -32,14 +36,11 @@ def start_async_loop():
 def stop():
     global servoControl
     servoControl = False
-    p.ChangeDutyCycle(50)  # sécurité pour le servo
     print("Servo arrêté.")
     return "Servo arrêté"
 
 if __name__ == '__main__':
-    # Lancer l'async loop dans un thread séparé
     thread = threading.Thread(target=start_async_loop)
     thread.start()
 
-    # Lancer Flask sur le port 5000
     app.run(host="0.0.0.0", port=5000)
