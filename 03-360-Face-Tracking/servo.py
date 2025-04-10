@@ -1,5 +1,11 @@
+# servo_server.py
+
 import RPi.GPIO as GPIO  
 import asyncio
+import threading
+from flask import Flask
+
+app = Flask(__name__)
 
 GPIO.setmode(GPIO.BOARD)  
 GPIO.setup(11, GPIO.OUT)  
@@ -7,16 +13,33 @@ GPIO.setup(11, GPIO.OUT)
 p = GPIO.PWM(11, 330)  
 p.start(50)  # 50% = STOP
 
+servoControl = True
 servoVitesse = 51  # Départ en arrêt (50%)
 
+# Cette boucle tourne tant que servoControl est True
 async def looper():
-    while True:
+    global servoControl
+    while servoControl:
         p.ChangeDutyCycle(servoVitesse)
+        await asyncio.sleep(0.1)
 
-async def main():
-    await asyncio.sleep(5)
-    print("main")
-    future = asyncio.ensure_future(looper())
+def start_async_loop():
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    loop.run_until_complete(looper())
+
+@app.route('/stop')
+def stop():
+    global servoControl
+    servoControl = False
+    p.ChangeDutyCycle(50)  # sécurité pour le servo
+    print("Servo arrêté.")
+    return "Servo arrêté"
 
 if __name__ == '__main__':
-    asyncio.get_event_loop().run_until_complete(main())
+    # Lancer l'async loop dans un thread séparé
+    thread = threading.Thread(target=start_async_loop)
+    thread.start()
+
+    # Lancer Flask sur le port 5000
+    app.run(host="0.0.0.0", port=5000)
