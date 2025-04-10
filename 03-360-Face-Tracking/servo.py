@@ -19,6 +19,7 @@ servoVitesse = 50  # Départ en arrêt (50%)
 # Cette boucle tourne tant que servoControl est True
 async def looper():
     global servoControl
+    global servoVitesse
 
     while servoControl:
         p.ChangeDutyCycle(servoVitesse)
@@ -45,6 +46,12 @@ def speed_up():
     servoVitesse = servoVitesse + 1
     print("vitesse +")
     return "vitesse +"
+
+@app.route('/speedDown')
+def speed_down():
+    servoVitesse = servoVitesse - 1
+    print("vitesse -")
+    return "vitesse -"
 
 if __name__ == '__main__':
     thread = threading.Thread(target=start_async_loop)
