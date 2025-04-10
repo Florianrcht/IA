@@ -1,19 +1,23 @@
-from pynput import keyboard
+import RPi.GPIO as GPIO  
+import time  
+import keyboard  # Permet de détecter les touches du clavier
 
-def on_press(key):
-    try:
-        if key.char == 'z':
-            print("Vitesse augmentée")
-        elif key.char == 's':
-            print("Vitesse réduite")
-        elif key.char == 'q':
-            print("Quitter")
-            return False
-    except AttributeError:
-        pass
+# Configuration GPIO
+GPIO.setmode(GPIO.BOARD)  
+GPIO.setup(11, GPIO.OUT)  
 
-listener = keyboard.Listener(on_press=on_press)
-listener.start()
+# Configuration du signal PWM
+p = GPIO.PWM(11, 330)  # Fréquence 330 Hz pour un servo à rotation continue
+p.start(50)  # 50% = STOP
 
-while listener.running:
-    pass
+servoVitesse = 51  # Départ en arrêt (50%)
+
+try:
+    while True:
+        print("depart : 50")
+        p.ChangeDutyCycle(servoVitesse)
+
+
+finally:
+    p.stop()
+    GPIO.cleanup()
