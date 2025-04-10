@@ -41,7 +41,7 @@ def stop():
     return "Servo arrêté"
 
 @app.route('/speedUp')
-def stop():
+def speed_up():
     servoVitesse = servoVitesse + 1
     print("vitesse +")
     return "vitesse +"
