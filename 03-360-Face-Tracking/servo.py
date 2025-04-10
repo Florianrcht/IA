@@ -1,23 +1,22 @@
 import RPi.GPIO as GPIO  
-import time  
-import keyboard  # Permet de détecter les touches du clavier
+import asyncio
 
-# Configuration GPIO
 GPIO.setmode(GPIO.BOARD)  
 GPIO.setup(11, GPIO.OUT)  
 
-# Configuration du signal PWM
-p = GPIO.PWM(11, 330)  # Fréquence 330 Hz pour un servo à rotation continue
+p = GPIO.PWM(11, 330)  
 p.start(50)  # 50% = STOP
 
 servoVitesse = 51  # Départ en arrêt (50%)
 
-try:
+async def looper():
     while True:
-        print("depart : 50")
         p.ChangeDutyCycle(servoVitesse)
 
+async def main():
+    await asyncio.sleep(5)
+    print("main")
+    future = asyncio.ensure_future(looper())
 
-finally:
-    p.stop()
-    GPIO.cleanup()
+if __name__ == '__main__':
+    asyncio.get_event_loop().run_until_complete(main())
