@@ -26,8 +26,9 @@ async def looper():
         print(servoVitesse)
         await asyncio.sleep(0.1)
 
+    p.stop()                 
+    GPIO.cleanup()
     print("Arreté")
-    p.ChangeDutyCycle(0)  
 
 def start_async_loop():
     loop = asyncio.new_event_loop()
@@ -41,19 +42,12 @@ def stop():
     print("Servo arrêté.")
     return "Servo arrêté"
 
-@app.route('/speedUp')
-def speed_up():
+@app.route('/speed/<int:servoVitesseRequest>')
+def speed(servoVitesseRequest):
     global servoVitesse
-    servoVitesse = servoVitesse + 1
-    print("vitesse +")
-    return "vitesse +"
-
-@app.route('/speedDown')
-def speed_down():
-    global servoVitesse
-    servoVitesse = servoVitesse - 1
-    print("vitesse -")
-    return "vitesse -"
+    servoVitesse = servoVitesseRequest
+    print("vitesse : ", servoVitesseRequest)
+    return "vitesse : ", servoVitesseRequest
 
 if __name__ == '__main__':
     thread = threading.Thread(target=start_async_loop)
