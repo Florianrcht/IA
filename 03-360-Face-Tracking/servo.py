@@ -14,7 +14,7 @@ p = GPIO.PWM(11, 330)
 p.start(50)  # 50% = STOP
 
 servoControl = True
-servoVitesse = 50  # Départ en arrêt (50%)
+servoVitesse = 0  # Départ en arrêt (50%)
 
 # Cette boucle tourne tant que servoControl est True
 async def looper():
@@ -27,7 +27,7 @@ async def looper():
         await asyncio.sleep(0.1)
 
     print("Arreté")
-    p.ChangeDutyCycle(50)  
+    p.ChangeDutyCycle(0)  
 
 def start_async_loop():
     loop = asyncio.new_event_loop()
@@ -43,12 +43,14 @@ def stop():
 
 @app.route('/speedUp')
 def speed_up():
+    global servoVitesse
     servoVitesse = servoVitesse + 1
     print("vitesse +")
     return "vitesse +"
 
 @app.route('/speedDown')
 def speed_down():
+    global servoVitesse
     servoVitesse = servoVitesse - 1
     print("vitesse -")
     return "vitesse -"
