@@ -10,7 +10,6 @@ if not cap.isOpened():
     exit()
 
 while searchFace:
-    print("en cours")
     ret, frame = cap.read()
     if not ret:
         print("Erreur : Impossible de lire une frame.")
