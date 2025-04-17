@@ -2,12 +2,13 @@ import cv2
 
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 cap = cv2.VideoCapture(0)
+searchFace = True 
 
 if not cap.isOpened():
     print("Erreur : Impossible d'ouvrir la caméra.")
     exit()
 
-while True:
+while searchFace:
     ret, frame = cap.read()
     if not ret:
         print("Erreur : Impossible de lire une frame.")
@@ -22,19 +23,22 @@ while True:
 #   cv2.line(frame, 1er(Horizontal, Verticale), 2eme(Horizontal, Verticale), (0, 255, 0), 3)
 
     for (x, y, w, h) in faces:
+        print("zfeez")
         face_center_x = x + w // 2
         face_center_y = y + h // 2
 
         print("face_center_x :", face_center_x) # horizontale
         print("face_center_y :", face_center_y) # verticale
-        if (600 < face_center_x < 700) and (200 < face_center_y < 300):
+        if (900 < face_center_x < 1100) and (500 < face_center_y < 600):
             print("au centre")
-            break 
+            searchFace = False 
 
         cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
 
-    print('Détection de visage', frame)
-    break
+    cv2.imshow('Détection de visage', frame)
+
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
 
 cap.release()
 cv2.destroyAllWindows()
