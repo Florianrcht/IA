@@ -12,7 +12,7 @@ p = GPIO.PWM(11, 330)
 p.start(50) 
 
 servoControl = True
-servoVitesse = 8
+servoVitesse = 0  
 
 async def looper():
     global servoControl
@@ -21,7 +21,8 @@ async def looper():
     while servoControl:
         p.ChangeDutyCycle(servoVitesse)
         print(servoVitesse)
-        await asyncio.sleep(0.1)
+        await asyncio.sleep(1)
+        servoVitesse = 0
 
     p.stop()                 
     GPIO.cleanup()
