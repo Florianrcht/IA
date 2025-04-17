@@ -40,12 +40,15 @@ def stop():
     print("Servo arrêté.")
     return "Servo arrêté"
 
-@app.route('/speed/<int:servoVitesseRequest>')
+@app.route('/speed/<servoVitesseRequest>')
 def speed(servoVitesseRequest):
     global servoVitesse
-    servoVitesse = servoVitesseRequest
-    print("vitesse : ", servoVitesseRequest)
-    return "vitesse : ", servoVitesseRequest
+    try:
+        servoVitesse = int(servoVitesseRequest)
+        print("Requête /speed reçue. Nouvelle vitesse :", servoVitesse)
+        return f"Vitesse mise à jour : {servoVitesse}"
+    except ValueError:
+        return "Erreur : la vitesse doit être un entier."
 
 if __name__ == '__main__':
     thread = threading.Thread(target=start_async_loop)
