@@ -49,7 +49,7 @@ while searchFace:
                 # 46 - 49 (0) => stop ?
                 # 50 - 86 => droite
                 
-                response = requests.get('http://localhost:5000/speed/'+10)
+                response = requests.get('http://localhost:5000/speed/'+"10")
                 print(response.text)
             except Exception as e:
                 print(f"Erreur lors de la requête : {e}")
@@ -61,7 +61,7 @@ while searchFace:
                 # 46 - 49 (0) => stop ?
                 # 50 - 86 => droite
                 
-                response = requests.get('http://localhost:5000/speed/'+50)
+                response = requests.get('http://localhost:5000/speed/'+"50")
                 print(response.text)
             except Exception as e:
                 print(f"Erreur lors de la requête : {e}")
