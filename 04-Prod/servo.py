@@ -12,7 +12,7 @@ p = GPIO.PWM(11, 330)
 p.start(50) 
 
 servoControl = True
-servoVitesse = 10  
+servoVitesse = 5  
 
 async def looper():
     global servoControl
