@@ -22,7 +22,6 @@ async def looper():
         p.ChangeDutyCycle(servoVitesse)
         print(servoVitesse)
         await asyncio.sleep(1)
-        servoVitesse = 0
 
     p.stop()                 
     GPIO.cleanup()
