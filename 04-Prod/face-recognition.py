@@ -4,7 +4,7 @@ import requests
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 cap = cv2.VideoCapture(0)
 searchFace = True 
-already_move_left = ""
+already_move = ""
 
 if not cap.isOpened():
     print("Erreur : Impossible d'ouvrir la caméra.")
@@ -33,9 +33,9 @@ while searchFace:
         centre_tete_ecran_y = centre_tete_y - centre_ecran_y
 
         
-        if (-100 < centre_tete_ecran_x < 100) and (-100 < centre_tete_ecran_y <100) and (already_move_center != "centre"):
+        if (-100 < centre_tete_ecran_x < 100) and (-100 < centre_tete_ecran_y <100) and (already_move != "centre"):
             print("au centre")
-            already_move_center = "centre"
+            already_move = "centre"
             try:
                 # 10 - 45 => gauche 
                 # 46 - 49 (0) => stop ?
@@ -52,9 +52,9 @@ while searchFace:
         if (centre_tete_ecran_y > 100):
             print("vvv BAS")
 
-        if (centre_tete_ecran_x > 100 and (already_move_center != "gauche")):
+        if (centre_tete_ecran_x > 100 and (already_move != "gauche")):
             print("<<< GAUCHE")
-            already_move_center = "gauche"
+            already_move = "gauche"
             try:
                 # 10 - 45 => gauche 
                 # 46 - 49 (0) => stop ?
@@ -65,9 +65,9 @@ while searchFace:
             except Exception as e:
                 print(f"Erreur lors de la requête : {e}")
 
-        if (centre_tete_ecran_x < -100 and (already_move_center != "droite")):
+        if (centre_tete_ecran_x < -100 and (already_move != "droite")):
             print(">>> DROITE")
-            already_move_center = "droite"
+            already_move = "droite"
             try:
                 # 10 - 45 => gauche 
                 # 46 - 49 (0) => stop ?
