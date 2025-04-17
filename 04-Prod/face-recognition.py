@@ -34,6 +34,15 @@ while searchFace:
         
         if (-100 < centre_tete_ecran_x < 100) and (-100 < centre_tete_ecran_y <100):
             print("au centre")
+            try:
+                # 10 - 45 => gauche 
+                # 46 - 49 (0) => stop ?
+                # 50 - 86 => droite
+                
+                response = requests.get('http://localhost:5000/speed/0')
+                print(response.text)
+            except Exception as e:
+                print(f"Erreur lors de la requête : {e}")
 
         if (centre_tete_ecran_y < -100):
             print("^^^ HAUT")
