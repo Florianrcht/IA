@@ -2,6 +2,7 @@
 arp -a (scan les ip)
 ssh RASPBERRY_USER1@RASPBERRY_IP (se connecter au rasp)
 source .venv/bin/activate (aller dans lenvironnement virtuel)
+pip3 install opencv-python
 pip3 install Flask
 pip3 install requests SQLAlchemy
 deactivate (pour sortir)
