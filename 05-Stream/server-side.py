@@ -21,6 +21,8 @@ while True:
     print('GOT CONNECTION FROM:',addr)
     if client_socket:
         vid = cv2.VideoCapture(0) #1 pour Mac
+        vid.set(cv2.CAP_PROP_FRAME_WIDTH, 320) #Réduis la taille de l'image
+        vid.set(cv2.CAP_PROP_FRAME_HEIGHT, 240)
         
         while(vid.isOpened()):
             print('Stream')
