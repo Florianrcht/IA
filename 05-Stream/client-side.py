@@ -1,8 +1,15 @@
 import os
 import socket,cv2, pickle,struct
+from dotenv import load_dotenv
 
+load_dotenv()
 client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 host_ip = os.environ.get('RASPBERRY_IP')
+if(host_ip == None):
+    print("No RASPBERRY_IP")
+else:
+    print(host_ip)
+
 port = 9999
 client_socket.connect((host_ip,port)) 
 data = b""
