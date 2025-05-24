@@ -23,10 +23,6 @@ while True:
         vid = cv2.VideoCapture(0) #1 pour Mac
         #vid.set(cv2.CAP_PROP_FRAME_WIDTH, 320) #Réduis la taille de l'image (très éfficace)
         #vid.set(cv2.CAP_PROP_FRAME_HEIGHT, 240)
-        width = vid.get(cv2.CAP_PROP_FRAME_WIDTH)
-        height = vid.get(cv2.CAP_PROP_FRAME_HEIGHT)
-
-        print(f"Résolution par défaut : {int(width)}x{int(height)}")
         
         while(vid.isOpened()):
             print('Stream')
