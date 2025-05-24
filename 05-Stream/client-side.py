@@ -1,7 +1,8 @@
+import os
 import socket,cv2, pickle,struct
 
 client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-host_ip = '127.0.1.1' 
+host_ip = os.environ.get('RASPBERRY_IP')
 port = 9999
 client_socket.connect((host_ip,port)) 
 data = b""
