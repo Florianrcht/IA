@@ -4,7 +4,7 @@ import socket, cv2, pickle,struct
 server_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 host_name  = socket.gethostname()
 host_ip = socket.gethostbyname(host_name)
-print('HOST IP:',host_ip)
+print('HOST IP:','')
 port = 9999
 socket_address = ('',port)
 
@@ -23,13 +23,15 @@ while True:
         vid = cv2.VideoCapture(0) #1 pour Mac
         #vid.set(cv2.CAP_PROP_FRAME_WIDTH, 320) #Réduis la taille de l'image (très éfficace)
         #vid.set(cv2.CAP_PROP_FRAME_HEIGHT, 240)
+        width = vid.get(cv2.CAP_PROP_FRAME_WIDTH)
+        height = vid.get(cv2.CAP_PROP_FRAME_HEIGHT)
+
+        print(f"Résolution par défaut : {int(width)}x{int(height)}")
         
         while(vid.isOpened()):
             print('Stream')
             img,frame = vid.read()
-            #a = pickle.dumps(frame)
-            _, buffer = cv2.imencode('.jpg', frame, [int(cv2.IMWRITE_JPEG_QUALITY), 80])
-            a = buffer.tobytes()
+            a = pickle.dumps(frame)
             message = struct.pack("Q",len(a))+a
             client_socket.sendall(message)
             
