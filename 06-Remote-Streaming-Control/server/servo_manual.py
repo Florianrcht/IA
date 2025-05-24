@@ -3,7 +3,7 @@ import asyncio
 import threading
 from flask import Flask
 
-def servo_function():
+def servo_manual_function():
     app = Flask(__name__)
 
     GPIO.setmode(GPIO.BOARD)  
