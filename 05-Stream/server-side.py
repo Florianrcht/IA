@@ -21,13 +21,15 @@ while True:
     print('GOT CONNECTION FROM:',addr)
     if client_socket:
         vid = cv2.VideoCapture(0) #1 pour Mac
-        vid.set(cv2.CAP_PROP_FRAME_WIDTH, 320) #Réduis la taille de l'image
-        vid.set(cv2.CAP_PROP_FRAME_HEIGHT, 240)
+        #vid.set(cv2.CAP_PROP_FRAME_WIDTH, 320) #Réduis la taille de l'image (très éfficace)
+        #vid.set(cv2.CAP_PROP_FRAME_HEIGHT, 240)
         
         while(vid.isOpened()):
             print('Stream')
             img,frame = vid.read()
-            a = pickle.dumps(frame)
+            #a = pickle.dumps(frame)
+            _, buffer = cv2.imencode('.jpg', frame, [int(cv2.IMWRITE_JPEG_QUALITY), 80])
+            a = buffer.tobytes()
             message = struct.pack("Q",len(a))+a
             client_socket.sendall(message)
             
