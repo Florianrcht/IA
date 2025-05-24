@@ -29,7 +29,6 @@ while True:
             message = struct.pack("Q",len(a))+a
             client_socket.sendall(message)
             
-            cv2.imshow('TRANSMITTING VIDEO',frame)
             key = cv2.waitKey(1) & 0xFF
             if key ==ord('q'):
                 client_socket.close()
