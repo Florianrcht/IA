@@ -22,6 +22,8 @@ def servo_function():
             p.ChangeDutyCycle(state["servoVitesse"])
             print("Vitesse:", state["servoVitesse"])
             await asyncio.sleep(1)
+            p.ChangeDutyCycle(0)
+
 
         p.stop()                 
         GPIO.cleanup()

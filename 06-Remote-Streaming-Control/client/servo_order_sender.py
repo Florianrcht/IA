@@ -1,50 +1,70 @@
 import requests
 import asyncio
 import threading
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
+host_ip = os.environ.get('RASPBERRY_IP')
+
+# Variables de contrôle (à déplacer en paramétrage si besoin)
+searchFace = True
+already_move = None
 
 def servo_order_sender():
-
     async def timer():
         await asyncio.sleep(3)
-        print("En ligne")
+        print(f"En ligne sur {host_ip}")
 
     async def looper():
         global searchFace
         global already_move
+
         while searchFace:
-            order = print("<(a) | (d)>")
-            # 10 - 45 => gauche 
-            # 46 - 49 (0) => stop ?
-            # 50 - 86 => droite
-            if (order == "a"):
+            order = input("<(a) | (d)> ").strip().lower()
+
+            if order == "a":
                 print("<<< GAUCHE")
                 already_move = "gauche"
                 try:
-                    response = requests.get('http://localhost:5000/speed/10')
+                    response = requests.get(f'http://{host_ip}:5000/speed/10')
                     print(response.text)
                 except Exception as e:
                     print(f"Erreur lors de la requête : {e}")
 
-            if (order == "d"):
+            elif order == "d":
                 print(">>> DROITE")
                 already_move = "droite"
                 try:
-                    response = requests.get('http://localhost:5000/speed/50')
+                    response = requests.get(f'http://{host_ip}:5000/speed/50')
                     print(response.text)
                 except Exception as e:
                     print(f"Erreur lors de la requête : {e}")
 
+            elif order == "s":
+                print(">>> STOP")
+                try:
+                    response = requests.get(f'http://{host_ip}:5000/speed/46')
+                    print(response.text)
+                except Exception as e:
+                    print(f"Erreur lors de la requête : {e}")
+
+            else:
+                print("Commande inconnue. Tape 'a' (gauche), 'd' (droite), ou 's' (stop).")
+
+            await asyncio.sleep(0.1)
 
     def start_async_loop():
         loop = asyncio.new_event_loop()
-        time = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
-        asyncio.set_event_loop(time)
-        loop.run_until_complete(looper())
-        time.run_until_complete(timer())
+        loop.run_until_complete(asyncio.gather(
+            timer(),
+            looper()
+        ))
 
+    thread = threading.Thread(target=start_async_loop)
+    thread.start()
 
-    if __name__ == '__main__':
-        thread = threading.Thread(target=start_async_loop)
-        thread.start()
+# Exécution directe si fichier lancé seul
+if __name__ == '__main__':
+    servo_order_sender()
