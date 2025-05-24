@@ -6,8 +6,4 @@ if __name__ == '__main__':
     stream_thread = threading.Thread(target=streaming_socket)
     stream_thread.start()
 
-    servo_thread = threading.Thread(target=servo_function)
-    servo_thread.start()
-
-    stream_thread.join()
-    servo_thread.join()
+    servo_function()
