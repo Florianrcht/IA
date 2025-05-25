@@ -21,8 +21,14 @@ def servo_order_sender():
         global already_move
 
         while searchFace:
-            order = input("<(a) | (d)> ").strip().lower()
-
+            order = input("vitesse : ").strip().lower()
+            try:
+                response = requests.get(f'http://{host_ip}:5000/speed/{order}')
+                print(response.text)
+            except Exception as e:
+                print(f"Erreur lors de la requête : {e}")
+                
+            '''
             if order == "a":
                 print("<<< GAUCHE")
                 already_move = "gauche"
@@ -51,6 +57,7 @@ def servo_order_sender():
 
             else:
                 print("Commande inconnue. Tape 'a' (gauche), 'd' (droite), ou 's' (stop).")
+            '''
 
             await asyncio.sleep(0.1)
 

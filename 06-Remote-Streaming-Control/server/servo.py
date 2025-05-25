@@ -9,7 +9,7 @@ def servo_function():
     GPIO.setmode(GPIO.BOARD)  
     GPIO.setup(11, GPIO.OUT)  
 
-    p = GPIO.PWM(11, 330)  
+    p = GPIO.PWM(11, 50)  
     p.start(50)
 
     state = {
@@ -21,8 +21,8 @@ def servo_function():
         while state["servoControl"]:
             p.ChangeDutyCycle(state["servoVitesse"])
             print("Vitesse:", state["servoVitesse"])
-            await asyncio.sleep(2)
             state["servoVitesse"] = int(46)
+            await asyncio.sleep(1)
 
 
         p.stop()                 
