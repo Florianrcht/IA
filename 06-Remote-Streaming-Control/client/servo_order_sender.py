@@ -22,18 +22,12 @@ def servo_order_sender():
 
         while searchFace:
             order = input("vitesse : ").strip().lower()
-            try:
-                response = requests.get(f'http://{host_ip}:5000/speed/{order}')
-                print(response.text)
-            except Exception as e:
-                print(f"Erreur lors de la requête : {e}")
-                
-            '''
+
             if order == "a":
                 print("<<< GAUCHE")
                 already_move = "gauche"
                 try:
-                    response = requests.get(f'http://{host_ip}:5000/speed/10')
+                    response = requests.get(f'http://{host_ip}:5000/speed/6')
                     print(response.text)
                 except Exception as e:
                     print(f"Erreur lors de la requête : {e}")
@@ -42,7 +36,7 @@ def servo_order_sender():
                 print(">>> DROITE")
                 already_move = "droite"
                 try:
-                    response = requests.get(f'http://{host_ip}:5000/speed/50')
+                    response = requests.get(f'http://{host_ip}:5000/speed/8')
                     print(response.text)
                 except Exception as e:
                     print(f"Erreur lors de la requête : {e}")
@@ -50,14 +44,22 @@ def servo_order_sender():
             elif order == "s":
                 print(">>> STOP")
                 try:
-                    response = requests.get(f'http://{host_ip}:5000/speed/46')
+                    response = requests.get(f'http://{host_ip}:5000/speed/0')
                     print(response.text)
                 except Exception as e:
                     print(f"Erreur lors de la requête : {e}")
 
+            elif order == "k":
+                print(">>> KILL")
+                try:
+                    response = requests.get(f'http://{host_ip}:5000/kill')
+                    print(response.text)
+                except Exception as e:
+                    print(f"Erreur lors de la requête : {e}")
+
+
             else:
                 print("Commande inconnue. Tape 'a' (gauche), 'd' (droite), ou 's' (stop).")
-            '''
 
             await asyncio.sleep(0.1)
 

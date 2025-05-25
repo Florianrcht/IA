@@ -21,7 +21,6 @@ def servo_function():
         while state["servoControl"]:
             p.ChangeDutyCycle(state["servoVitesse"])
             print("Vitesse:", state["servoVitesse"])
-            state["servoVitesse"] = int(46)
             await asyncio.sleep(1)
 
 

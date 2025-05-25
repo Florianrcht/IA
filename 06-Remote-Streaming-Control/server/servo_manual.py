@@ -1,7 +1,6 @@
 import RPi.GPIO as GPIO  
-import asyncio
-import threading
 from flask import Flask
+import time
 
 def servo_manual_function():
     app = Flask(__name__)
@@ -32,6 +31,8 @@ def servo_manual_function():
             state["servoVitesse"] = int(servoVitesseRequest)
             print("Commande reçue : vitesse =", state["servoVitesse"])
             p.ChangeDutyCycle(state["servoVitesse"])
+            time.sleep(1)
+            p.ChangeDutyCycle(0)
             return f"Vitesse mise à jour : {state['servoVitesse']}"
         except ValueError:
             return "Erreur : la vitesse doit être un entier."
