@@ -3,6 +3,7 @@ import asyncio
 import threading
 import os
 from dotenv import load_dotenv
+import keyboard
 
 load_dotenv()
 host_ip = os.environ.get('RASPBERRY_IP')
@@ -21,9 +22,8 @@ def servo_order_sender():
         global already_move
 
         while searchFace:
-            order = input("<a | d> | s/stop | k/kill").strip().lower()
-
-            if order == "a":
+            print("Commandes : < a ou d > | stop s | kill k")
+            if keyboard.is_pressed("a"):
                 print("<<< GAUCHE")
                 already_move = "gauche"
                 try:
@@ -32,7 +32,7 @@ def servo_order_sender():
                 except Exception as e:
                     print(f"Erreur lors de la requête : {e}")
 
-            elif order == "d":
+            elif keyboard.is_pressed("d"):
                 print(">>> DROITE")
                 already_move = "droite"
                 try:
@@ -41,7 +41,7 @@ def servo_order_sender():
                 except Exception as e:
                     print(f"Erreur lors de la requête : {e}")
 
-            elif order == "s":
+            elif keyboard.is_pressed("s"):
                 print(">>> STOP")
                 try:
                     response = requests.get(f'http://{host_ip}:5000/speed/0')
@@ -49,7 +49,7 @@ def servo_order_sender():
                 except Exception as e:
                     print(f"Erreur lors de la requête : {e}")
 
-            elif order == "k":
+            elif keyboard.is_pressed("k"):
                 print(">>> KILL")
                 try:
                     response = requests.get(f'http://{host_ip}:5000/kill')

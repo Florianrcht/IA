@@ -31,7 +31,7 @@ def servo_manual_function():
             state["servoVitesse"] = int(servoVitesseRequest)
             print("Commande reçue : vitesse =", state["servoVitesse"])
             p.ChangeDutyCycle(state["servoVitesse"])
-            time.sleep(1)
+            time.sleep(0.3)
             p.ChangeDutyCycle(0)
             return f"Vitesse mise à jour : {state['servoVitesse']}"
         except ValueError:
