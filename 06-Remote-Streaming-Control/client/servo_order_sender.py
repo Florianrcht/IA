@@ -23,7 +23,7 @@ def servo_order_sender():
 
         while searchFace:
             print("Commandes : < a ou d > | stop s | kill k")
-            if keyboard.is_pressed("a"):
+            if keyboard.is_pressed('a'):
                 print("<<< GAUCHE")
                 already_move = "gauche"
                 try:
@@ -32,7 +32,7 @@ def servo_order_sender():
                 except Exception as e:
                     print(f"Erreur lors de la requête : {e}")
 
-            elif keyboard.is_pressed("d"):
+            elif keyboard.is_pressed('d'):
                 print(">>> DROITE")
                 already_move = "droite"
                 try:
@@ -41,7 +41,7 @@ def servo_order_sender():
                 except Exception as e:
                     print(f"Erreur lors de la requête : {e}")
 
-            elif keyboard.is_pressed("s"):
+            elif keyboard.is_pressed('s'):
                 print(">>> STOP")
                 try:
                     response = requests.get(f'http://{host_ip}:5000/speed/0')
@@ -49,7 +49,7 @@ def servo_order_sender():
                 except Exception as e:
                     print(f"Erreur lors de la requête : {e}")
 
-            elif keyboard.is_pressed("k"):
+            elif keyboard.is_pressed('k'):
                 print(">>> KILL")
                 try:
                     response = requests.get(f'http://{host_ip}:5000/kill')
