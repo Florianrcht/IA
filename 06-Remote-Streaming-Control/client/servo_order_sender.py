@@ -21,7 +21,7 @@ def servo_order_sender():
         global already_move
 
         while searchFace:
-            order = input("vitesse : ").strip().lower()
+            order = input("<a | d> | s/stop | k/kill").strip().lower()
 
             if order == "a":
                 print("<<< GAUCHE")
