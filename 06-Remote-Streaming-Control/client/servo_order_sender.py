@@ -3,14 +3,24 @@ import asyncio
 import threading
 import os
 from dotenv import load_dotenv
-import keyboard
+from pynput import keyboard
 
 load_dotenv()
 host_ip = os.environ.get('RASPBERRY_IP')
 
-# Variables de contrôle (à déplacer en paramétrage si besoin)
+# Variables de contrôle
 searchFace = True
 already_move = None
+
+command_queue = []
+
+def on_press(key):
+    try:
+        k = key.char.lower()  
+        if k in ['a', 'd', 's', 'k']:
+            command_queue.append(k)
+    except AttributeError:
+        pass
 
 def servo_order_sender():
     async def timer():
@@ -22,44 +32,43 @@ def servo_order_sender():
         global already_move
 
         while searchFace:
-            print("Commandes : < a ou d > | stop s | kill k")
-            if keyboard.is_pressed('a'):
-                print("<<< GAUCHE")
-                already_move = "gauche"
-                try:
-                    response = requests.get(f'http://{host_ip}:5000/speed/6')
-                    print(response.text)
-                except Exception as e:
-                    print(f"Erreur lors de la requête : {e}")
+            if command_queue:
+                order = command_queue.pop(0)
 
-            elif keyboard.is_pressed('d'):
-                print(">>> DROITE")
-                already_move = "droite"
-                try:
-                    response = requests.get(f'http://{host_ip}:5000/speed/8')
-                    print(response.text)
-                except Exception as e:
-                    print(f"Erreur lors de la requête : {e}")
+                if order == 'a':
+                    print("<<< GAUCHE")
+                    already_move = "gauche"
+                    try:
+                        response = requests.get(f'http://{host_ip}:5000/speed/6')
+                        print(response.text)
+                    except Exception as e:
+                        print(f"Erreur lors de la requête : {e}")
 
-            elif keyboard.is_pressed('s'):
-                print(">>> STOP")
-                try:
-                    response = requests.get(f'http://{host_ip}:5000/speed/0')
-                    print(response.text)
-                except Exception as e:
-                    print(f"Erreur lors de la requête : {e}")
+                elif order == 'd':
+                    print(">>> DROITE")
+                    already_move = "droite"
+                    try:
+                        response = requests.get(f'http://{host_ip}:5000/speed/8')
+                        print(response.text)
+                    except Exception as e:
+                        print(f"Erreur lors de la requête : {e}")
 
-            elif keyboard.is_pressed('k'):
-                print(">>> KILL")
-                try:
-                    response = requests.get(f'http://{host_ip}:5000/kill')
-                    print(response.text)
-                except Exception as e:
-                    print(f"Erreur lors de la requête : {e}")
+                elif order == 's':
+                    print(">>> STOP")
+                    try:
+                        response = requests.get(f'http://{host_ip}:5000/speed/0')
+                        print(response.text)
+                    except Exception as e:
+                        print(f"Erreur lors de la requête : {e}")
 
-
-            else:
-                print("Commande inconnue. Tape 'a' (gauche), 'd' (droite), ou 's' (stop).")
+                elif order == 'k':
+                    print(">>> KILL")
+                    try:
+                        response = requests.get(f'http://{host_ip}:5000/kill')
+                        print(response.text)
+                        searchFace = False  # Arrête la boucle
+                    except Exception as e:
+                        print(f"Erreur lors de la requête : {e}")
 
             await asyncio.sleep(0.1)
 
@@ -71,9 +80,12 @@ def servo_order_sender():
             looper()
         ))
 
+    listener = keyboard.Listener(on_press=on_press)
+    listener.start()
+
     thread = threading.Thread(target=start_async_loop)
     thread.start()
 
-# Exécution directe si fichier lancé seul
 if __name__ == '__main__':
+    print("Contrôle du servo : appuie sur 'a', 'd', 's', ou 'k'")
     servo_order_sender()
