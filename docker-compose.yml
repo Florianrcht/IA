@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  server:
+    build:
+      context: .
+      dockerfile: prod/server/Dockerfile.server
+    container_name: server
+    restart: unless-stopped
+    volumes:
+      - ./prod/server:/prod/server
+    environment:
+      - START_MODE=server
+
+  client:
+    build:
+      context: .
+      dockerfile: prod/client/Dockerfile.client
+    container_name: client
+    restart: unless-stopped
+    volumes:
+      - ./prod/client:/prod/client
+    env_file:
+      - .env
