@@ -11,6 +11,10 @@ services:
       - ./prod/server:/prod/server
     environment:
       - START_MODE=server
+    privileged: true
+    devices:
+      - "/dev/gpiomem:/dev/gpiomem"
+
 
   client:
     build:
